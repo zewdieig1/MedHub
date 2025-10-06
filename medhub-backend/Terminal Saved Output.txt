@@ -1,0 +1,134 @@
+Last login: Fri Sep 26 14:26:08 on ttys000
+bigchungus@Bigs-MacBook-Air-10 ~ % pwd
+ls -la
+
+/Users/bigchungus
+total 20120
+drwxr-x---+   81 bigchungus  staff     2592 Sep 26 14:30 .
+drwxr-xr-x     6 root        admin      192 Sep  5 12:59 ..
+drwxr-xr-x     4 bigchungus  staff      128 Jan 20  2025 .cache
+-r--------     1 bigchungus  staff        7 Nov 16  2022 .CFUserTextEncoding
+drwxr-xr-x     4 bigchungus  staff      128 May 19 11:46 .config
+drwx------     3 bigchungus  staff       96 Jul 10  2023 .cups
+-rw-r--r--@    1 bigchungus  staff    18436 Sep 25 10:17 .DS_Store
+drwxr-xr-x    10 bigchungus  staff      320 Nov 10  2024 .eclipse
+-rw-r--r--     1 bigchungus  staff      235 Sep 12 14:49 .gitconfig
+-rw-r--r--@    1 bigchungus  staff       10 Mar 22  2024 .grasp_jss
+-rw-r--r--@    1 bigchungus  staff       64 Mar 22  2024 .grasp_jss2
+drwxr-xr-x     9 bigchungus  staff      288 Sep 25 13:18 .grasp_settings
+drwxr-xr-x     4 bigchungus  staff      128 Aug 31  2023 .idlerc
+drwxr-xr-x    13 bigchungus  staff      416 Apr 30 20:52 .ipynb_checkpoints
+drwxr-xr-x     3 bigchungus  staff       96 Jan 30  2025 .ipython
+drwxr-xr-x     3 bigchungus  staff       96 Feb 25  2025 .jupyter
+-rw-------     1 bigchungus  staff       20 Sep 12 14:43 .lesshst
+drwxr-xr-x@    3 bigchungus  staff       96 May 19 11:46 .local
+drwxr-xr-x     3 bigchungus  staff       96 Jan 25  2024 .m2
+drwxr-xr-x     3 bigchungus  staff       96 Mar  2  2025 .matplotlib
+drwxr-xr-x    11 bigchungus  staff      352 Jan 20  2025 .opam
+drwxr-xr-x     3 bigchungus  staff       96 Jan 23  2024 .oracle_jre_usage
+drwxr-xr-x     8 bigchungus  staff      256 Sep 25 10:20 .p2
+-rw-r--r--     1 bigchungus  staff        0 May 22 13:15 .Rapp.history
+-rw-r--r--     1 bigchungus  staff       48 May 22 13:15 .RData
+-rw-r--r--@    1 bigchungus  staff      227 May 22 13:28 .Rhistory
+drwxr-xr-x     5 bigchungus  staff      160 Sep 14 20:29 .swiftpm
+drwx------+   69 bigchungus  staff     2208 Sep 25 10:40 .Trash
+drwxr-xr-x     5 bigchungus  staff      160 Jan 20  2025 .vscode
+-rw-r--r--     1 bigchungus  staff      757 Sep  5 13:21 .zprofile
+-rw-r--r--     1 bigchungus  staff      375 Jan 20  2025 .zprofile.macports-saved_2025-09-05_at_13:21:07
+-rw-r--r--     1 bigchungus  staff      166 Aug 29  2023 .zprofile.pysave
+-rw-------     1 bigchungus  staff     9948 Sep 26 14:30 .zsh_history
+drwx------    20 bigchungus  staff      640 Sep 26 14:30 .zsh_sessions
+-rw-r--r--     1 bigchungus  staff      384 Jan 20  2025 .zshrc
+drwxr-xr-x    39 bigchungus  staff     1248 Mar 17  2025 347 Computer Models & Languages 
+drwx------@    4 bigchungus  staff      128 Sep 12  2023 Applications
+-rw-r--r--     1 bigchungus  staff     1795 Sep 25 13:18 BST.gpj
+drwxr-xr-x     2 bigchungus  staff       64 Apr 11  2024 canvas
+drwxr-xr-x     2 bigchungus  staff       64 Apr 11  2024 classes
+drwxr-xr-x    55 bigchungus  staff     1760 Apr 30 10:50 Computer Architecture
+drwxr-xr-x     3 bigchungus  staff       96 Sep  5 15:13 csci377
+drwxr-xr-x     4 bigchungus  staff      128 Sep  5 14:28 csci377_lab1
+-rw-r--r--@    1 bigchungus  staff    71410 Dec  6  2023 cylinder.png
+drwxr-xr-x     2 bigchungus  staff       64 Apr 21 22:30 Data Structures
+drwx------+   94 bigchungus  staff     3008 Sep 12 14:41 Desktop
+drwxr-xr-x     2 bigchungus  staff       64 Apr 11  2024 doc
+drwx------@   53 bigchungus  staff     1696 Sep  5 13:50 Documents
+drwx------@ 1252 bigchungus  staff    40064 Sep 25 10:35 Downloads
+-rw-r--r--     1 bigchungus  staff  4738776 Feb 25  2025 dry+bean+dataset.zip
+-rw-r--r--@    1 bigchungus  staff  1328912 Jan 31  2024 Dynamic_Earth19 (1).kmz
+drwxr-xr-x     8 bigchungus  staff      256 Apr 16  2024 GRASP FILES
+-rw-r--r--@    1 bigchungus  staff    28192 Nov  8  2023 Homework-8.html
+-rw-r--r--     1 bigchungus  staff    15838 Feb 25  2025 HW_1.ipynb
+-rw-r--r--     1 bigchungus  staff       72 Apr 21 21:50 HW_ipynb
+drwxr-xr-x     5 bigchungus  staff      160 Feb 25  2025 HW1
+-rw-r--r--@    1 bigchungus  staff    28156 Nov  8  2023 hw8.html
+-rw-r--r--@    1 bigchungus  staff   281608 Sep  1  2023 Infomart (1) (1).pdf
+-rw-r--r--@    1 bigchungus  staff   490534 Feb 25  2025 Iris.ipynb
+-rw-r--r--@    1 bigchungus  staff  2887212 Oct 20  2023 La Casa en Mango Street.pdf
+drwx------@  108 bigchungus  staff     3456 Sep 14 19:54 Library
+-rw-r--r--@    1 bigchungus  staff    97047 Nov  6  2023 ma110_hw7_f23.pdf
+drwx------     6 bigchungus  staff      192 Aug 20  2022 Movies
+drwx------+    4 bigchungus  staff      128 May 26  2022 Music
+drwxr-xr-x     4 bigchungus  staff      128 Aug 26  2024 NewFolder
+drwxr-xr-x     2 bigchungus  staff       64 Mar 21  2024 NewFolder.1
+drwxr-xr-x@   41 bigchungus  staff     1312 Aug 26 10:07 PAKULA-2025
+drwx------+    6 bigchungus  staff      192 Sep  6  2023 Pictures
+-rw-r--r--     1 bigchungus  staff    37786 Mar 20  2025 Project.ipynb
+drwxr-xr-x+    4 bigchungus  staff      128 May 21  2022 Public
+drwxr-xr-x     2 bigchungus  staff       64 Apr 11  2024 src
+drwxr-xr-x     2 bigchungus  staff       64 Apr 11  2024 test
+-rw-r--r--     1 bigchungus  staff      617 Jan 30  2025 Untitled.ipynb
+-rw-r--r--     1 bigchungus  staff        0 Jan 30  2025 untitled.py
+-rw-r--r--     1 bigchungus  staff        0 Feb 25  2025 untitled.txt
+-rw-r--r--     1 bigchungus  staff      780 Feb 25  2025 Untitled1.ipynb
+-rw-r--r--     1 bigchungus  staff        0 Feb 25  2025 untitled1.py
+-rw-r--r--     1 bigchungus  staff       72 Mar 27  2025 Untitled2.ipynb
+-rw-r--r--     1 bigchungus  staff    13373 Apr 30 20:54 Untitled3.ipynb
+-rw-r--r--@    1 bigchungus  staff   164075 Jan 11  2024 Wellfleet-Form-W9-wEdits-Final-01192018_1-Page.pdf
+drwxr-xr-x    10 bigchungus  staff      320 Jun 26 14:09 Zotero
+bigchungus@Bigs-MacBook-Air-10 ~ % cd ~/csci377
+
+bigchungus@Bigs-MacBook-Air-10 csci377 % ls
+csci377_lab1
+bigchungus@Bigs-MacBook-Air-10 csci377 % cd ~/Desktop/csci377
+
+bigchungus@Bigs-MacBook-Air-10 csci377 % ls
+main.py				Terminal Saved Output.txt
+Rosa
+bigchungus@Bigs-MacBook-Air-10 csci377 % python3 -m uvicorn main:app --reload
+
+INFO:     Will watch for changes in these directories: ['/Users/bigchungus/Desktop/csci377']
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [94824] using StatReload
+INFO:     Started server process [94826]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:52095 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52095 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:52103 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52103 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52124 - "GET /health HTTP/1.1" 200 OK
+WARNING:  StatReload detected changes in 'main.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [94826]
+INFO:     Started server process [94859]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:52182 - "GET / HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:52217 - "GET /login?email=you@example.com HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52259 - "GET /login?email=solisrv@beloit.edu HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52276 - "GET / HTTP/1.1" 200 OK
+WARNING:  StatReload detected changes in 'main.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [94859]
+INFO:     Started server process [94972]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:52377 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52380 - "GET /plans HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:52393 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52393 - "GET /openapi.json HTTP/1.1" 200 OK
+
