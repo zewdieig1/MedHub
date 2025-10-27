@@ -1,0 +1,62 @@
+/* LoginPage.css */
+
+body{
+background-color: black;
+color: white;
+font-family: 'Arial, sans-serif';
+display: flex;
+justify-self: center;
+align-items: center;
+height: 100vh;
+margin: 0;
+
+}
+
+.login-container {
+    background-color: #1a1a1a;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
+    width: 350px;
+    text-align: center;
+
+}
+.login-title{
+    color: aliceblue;
+    marign-bottom: 20px;
+    font-size: 28px;
+}
+input{
+    width: 100%;
+    padding:10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 6px
+}
+
+button{
+    width: 100%;
+    padding: 10px;
+    background-color: white;
+    color: black;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+  background-color: #00bfff;
+  color: white;
+}
+
+.loading-text {
+  color: white;
+  font-size: 32px;
+  animation: fadeIn 2s ease-in-out infinite alternate;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0.3; }
+  to { opacity: 1; }
+}
