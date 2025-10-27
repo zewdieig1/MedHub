@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insurance Plans | MedHub</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+</head>
+<body class="bg-gray-50">
+    <custom-navbar></custom-navbar>
+    
+    <main class="container mx-auto px-4 py-8">
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-bold">Dental Insurance Plans</h1>
+            <div class="flex gap-4">
+                <div class="relative">
+                    <select class="appearance-none bg-white border border-gray-300 rounded-lg px-4 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-primary-500">
+                        <option>Sort by</option>
+                        <option>Price: Low to High</option>
+                        <option>Price: High to Low</option>
+                        <option>Coverage: Basic to Premium</option>
+                        <option>Rating: High to Low</option>
+                    </select>
+                    <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                        <i data-feather="chevron-down" class="w-4 h-4"></i>
+                    </div>
+                </div>
+                <button class="bg-primary-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-primary-600 transition">
+                    <i data-feather="filter" class="w-4 h-4"></i>
+                    Filters
+                </button>
+            </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <!-- Plan Card 1 -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
+                <div class="bg-primary-100 p-4">
+                    <h3 class="text-xl font-bold text-primary-800">Basic Dental</h3>
+                    <p class="text-primary-600">Essential coverage at an affordable price</p>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-baseline mb-4">
+                        <span class="text-3xl font-bold">$19</span>
+                        <span class="ml-1 text-gray-500">/month</span>
+                    </div>
+                    <ul class="space-y-2 mb-6">
+                        <li class="flex items-center">
+                            <i data-feather="check" class="w-4 h-4 text-green-500 mr-2"></i>
+                            <span>2 cleanings per year</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i data-feather="check" class="w-4 h-4 text-green-500 mr-2"></i>
+                            <span>X-rays included</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i data-feather="check" class="w-4 h-4 text-green-500 mr-2"></i>
+                            <span>50% off fillings</span>
+                        </li>
+                        <li class="flex items-center text-gray-400">
+                            <i data-feather="x" class="w-4 h-4 mr-2"></i>
+                            <span>No orthodontics</span>
+                        </li>
+                    </ul>
+                    <button class="w-full bg-primary-500 text-white py-2 rounded-lg hover:bg-primary-600 transition">
+                        View Details
+                    </button>
+                </div>
+            </div>
+
+            <!-- Plan Card 2 -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition border-2 border-secondary-300">
+                <div class="bg-secondary-100 p-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="text-xl font-bold text-secondary-800">Premium Dental</h3>
+                            <p class="text-secondary-600">Comprehensive coverage for all needs</p>
+                        </div>
+                        <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">POPULAR</span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-baseline mb-4">
+                        <span class="text-3xl font-bold">$39</span>
+                        <span class="ml-1 text-gray-500">/month</span>
+                    </div>
+                    <ul class="space-y-2 mb-6">
+                        <li class="flex items-center">
+                            <i data-feather="check" class="w-4 h-4 text-green-500 mr-2"></i>
+                            <span>4 cleanings per year</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i data-feather="check" class="w-4 h-4 text-green-500 mr-2"></i>
+                            <span>All X-rays included</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i data-feather="check" class="w-4 h-4 text-green-500 mr-2"></i>
+                            <span>80% off major procedures</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i data-feather="check" class="w-4 h-4 text-green-500 mr-2"></i>
+                            <span>$1500 orthodontics allowance</span>
+                        </li>
+                    </ul>
+                    <button class="w-full bg-secondary-500 text-white py-2 rounded-lg hover:bg-secondary-600 transition">
+                        View Details
+                    </button>
+                </div>
+            </div>
+
+            <!-- Plan Card 3 -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
+                <div class="bg-primary-100 p-4">
+                    <h3 class="text-xl font-bold text-primary-800">Family Dental</h3>
+                    <p class="text-primary-600">Coverage for the whole family</p>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-baseline mb-4">
+                        <span class="text-3xl font-bold">$79</span>
+                        <span class="ml-1 text-gray-500">/month</span>
+                    </div>
+                    <ul class="space-y-2 mb-6">
+                        <li class="flex items-center">
+                            <i data-feather="check" class="w-4 h-4 text-green-500 mr-2"></i>
+                            <span>Coverage for up to 5 family members</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i data-feather="check" class="w-4 h-4 text-green-500 mr-2"></i>
+                            <span>2 cleanings per person</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i data-feather="check" class="w-4 h-4 text-green-500 mr-2"></i>
+                            <span>50% off fillings</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i data-feather="check" class="w-4 h-4 text-green-500 mr-2"></i>
+                            <span>Child orthodontics coverage</span>
+                        </li>
+                    </ul>
+                    <button class="w-full bg-primary-500 text-white py-2 rounded-lg hover:bg-primary-600 transition">
+                        View Details
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-sm">
+            <h2 class="text-xl font-bold mb-4">Need help choosing a plan?</h2>
+            <p class="mb-4">Our recommendation tool can help you find the perfect dental insurance based on your needs and budget.</p>
+            <button class="bg-secondary-500 text-white px-4 py-2 rounded-lg hover:bg-secondary-600 transition flex items-center gap-2">
+                <i data-feather="heart" class="w-4 h-4"></i>
+                Get Personalized Recommendations
+            </button>
+        </div>
+    </main>
+
+    <custom-footer></custom-footer>
+    
+    <script src="components/navbar.js"></script>
+    <script src="components/footer.js"></script>
+    <script src="script.js"></script>
+    <script>feather.replace();</script>
+</body>
+</html>
