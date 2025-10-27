@@ -1,1 +1,397 @@
+from fastapi import FastAPI, Query
+from fastapi.responses import HTMLResponse
+from pydantic import BaseModel
+from typing import Optional, List
+import pandas as pd
+import re
+
+app = FastAPI(title="Wisco Dental Plans")
+df_plans = None
+
+class Plan(BaseModel):
+    plan_id: str
+    plan_name: str
+    issuer_name: str
+    county: str
+    plan_type: str
+    deductible: Optional[str]
+    coinsurance: Optional[str]
+    annual_max: Optional[str]
+    network_url: Optional[str]
+    brochure_url: Optional[str]
+
+@app.on_event("startup")
+def load_data():
+    global df_plans
+    df = pd.read_excel("Individual_Market_Dental.xlsx", sheet_name="Individual_Market_Dental", header=1)
+    df = df[df["State Code"].astype(str).str.strip() == "WI"]
+    df.columns = df.columns.str.strip()
+    df_plans = df
+
+@app.get("/", response_class=HTMLResponse)
+async def home():
+    return HTMLResponse(content="""
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Wisconsin Dental Plans</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    .tab {
+      cursor: pointer;
+      padding: 0.75rem 1.5rem;
+      border-bottom: 3px solid transparent;
+      transition: all 0.3s;
+    }
+    .tab.active {
+      border-bottom-color: #3b82f6;
+      color: #3b82f6;
+      font-weight: 600;
+    }
+    .tab:hover {
+      background-color: #f3f4f6;
+    }
+    .bookmark-badge {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      font-size: 1.5rem;
+      cursor: pointer;
+      z-index: 10;
+    }
+    .bookmark-badge:hover {
+      transform: scale(1.2);
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+  <header class="bg-white shadow-md py-6 px-4">
+    <h1 class="text-3xl font-bold text-gray-900">Wisconsin Dental Plans</h1>
+    <p class="text-gray-600">Compare and filter 2025 individual dental coverage</p>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 py-6">
+    <!-- Tabs -->
+    <div class="bg-white rounded-t shadow mb-0">
+      <div class="flex border-b">
+        <div class="tab active" onclick="switchTab('all')" id="tab-all">All Plans</div>
+        <div class="tab" onclick="switchTab('bookmarked')" id="tab-bookmarked">Bookmarked Plans</div>
+        <div class="tab" onclick="switchTab('history')" id="tab-history">View History</div>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="bg-white p-4 shadow mb-6" id="filters-section">
+      <div class="grid md:grid-cols-4 gap-4">
+        <input id="search" placeholder="Search..." class="border px-3 py-2 rounded w-full" />
+        <select id="countyFilter" class="border px-3 py-2 rounded w-full">
+          <option value="">All Counties</option>
+        </select>
+        <select id="issuerFilter" class="border px-3 py-2 rounded w-full">
+          <option value="">All Issuers</option>
+        </select>
+        <select id="typeFilter" class="border px-3 py-2 rounded w-full">
+          <option value="">All Plan Types</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Plan Cards -->
+    <div id="plans" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+
+    <!-- Bookmarked Plans -->
+    <div id="bookmarked-plans" class="grid grid-cols-1 md:grid-cols-2 gap-6 hidden"></div>
+
+    <!-- Empty State for Bookmarks -->
+    <div id="empty-bookmarks" class="hidden bg-white p-12 rounded shadow text-center">
+      <div class="text-6xl mb-4">🔖</div>
+      <h3 class="text-xl font-semibold text-gray-900 mb-2">No Bookmarked Plans</h3>
+      <p class="text-gray-600">Click the bookmark icon on any plan to save it here for quick access.</p>
+    </div>
+
+    <!-- Viewer History Section -->
+    <div id="history-section" class="hidden bg-white p-6 rounded shadow mt-6">
+      <h2 class="text-lg font-semibold text-gray-800 mb-3">Viewer History</h2>
+      <ul id="history-list" class="text-sm text-gray-700 space-y-2"></ul>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+      <div class="bg-white max-w-xl w-full rounded shadow p-6 relative">
+        <button onclick="closeModal()" class="absolute top-2 right-2 text-gray-500 hover:text-black text-2xl">&times;</button>
+        <h2 id="modalTitle" class="text-xl font-bold mb-2"></h2>
+        <p id="modalId" class="text-gray-500 text-sm mb-4"></p>
+        <div id="modalContent"></div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    let currentTab = 'all';
+    let allPlansData = [];
+    let bookmarkedPlanIds = new Set(JSON.parse(localStorage.getItem('bookmarkedPlans') || '[]'));
+
+    function toggleBookmark(planId, county, event) {
+      event.stopPropagation();
+      const uniqueKey = `${planId}__${county}`;
+      if (bookmarkedPlanIds.has(uniqueKey)) {
+        bookmarkedPlanIds.delete(uniqueKey);
+      } else {
+        bookmarkedPlanIds.add(uniqueKey);
+      }
+      localStorage.setItem('bookmarkedPlans', JSON.stringify([...bookmarkedPlanIds]));
+      if (currentTab === 'bookmarked') {
+        showBookmarkedPlans();
+      } else {
+        renderPlans(allPlansData);
+      }
+    }
+
+    function switchTab(tab) {
+      currentTab = tab;
+      document.getElementById('tab-all').classList.remove('active');
+      document.getElementById('tab-bookmarked').classList.remove('active');
+      document.getElementById('tab-history').classList.remove('active');
+      document.getElementById('tab-' + tab).classList.add('active');
+
+      document.getElementById('filters-section').classList.add('hidden');
+      document.getElementById('plans').classList.add('hidden');
+      document.getElementById('bookmarked-plans').classList.add('hidden');
+      document.getElementById('empty-bookmarks').classList.add('hidden');
+      document.getElementById('history-section').classList.add('hidden');
+
+      if (tab === 'all') {
+        document.getElementById('filters-section').classList.remove('hidden');
+        document.getElementById('plans').classList.remove('hidden');
+        fetchPlans();
+      } else if (tab === 'bookmarked') {
+        showBookmarkedPlans();
+      } else if (tab === 'history') {
+        showViewerHistory();
+      }
+    }
+
+    async function showBookmarkedPlans() {
+      if (bookmarkedPlanIds.size === 0) {
+        document.getElementById('bookmarked-plans').classList.add('hidden');
+        document.getElementById('empty-bookmarks').classList.remove('hidden');
+        return;
+      }
+
+      document.getElementById('empty-bookmarks').classList.add('hidden');
+      document.getElementById('bookmarked-plans').classList.remove('hidden');
+
+      const bookmarkedPlans = allPlansData.filter(plan => {
+        const key = `${plan.plan_id}__${plan.county}`;
+        return bookmarkedPlanIds.has(key);
+      });
+
+      const container = document.getElementById('bookmarked-plans');
+      container.innerHTML = '';
+      bookmarkedPlans.forEach(plan => {
+        container.appendChild(createPlanCard(plan));
+      });
+    }
+
+    function createPlanCard(plan) {
+      const div = document.createElement('div');
+      div.className = 'bg-white p-4 rounded shadow hover:shadow-lg transition cursor-pointer relative';
+      div.onclick = () => openModal(plan.plan_id);
+
+      const key = `${plan.plan_id}__${plan.county}`;
+      const isBookmarked = bookmarkedPlanIds.has(key);
+      const bookmarkIcon = isBookmarked ? '⭐' : '☆';
+
+      let html = `
+        <div class="bookmark-badge" onclick="toggleBookmark('${plan.plan_id}', '${plan.county}', event)" title="${isBookmarked ? 'Remove bookmark' : 'Bookmark this plan'}">
+          ${bookmarkIcon}
+        </div>
+        <h2 class="text-lg font-semibold text-gray-900 pr-8">${plan.plan_name}</h2>
+        <p class="text-gray-600 text-sm">${plan.plan_id} - ${plan.issuer_name}</p>
+        <p class="text-sm text-gray-700 mt-1"><strong>County:</strong> ${plan.county} | <strong>Type:</strong> ${plan.plan_type}</p>
+        <p class="text-sm mt-1"><strong>Deductible:</strong> ${plan.deductible || 'N/A'} | <strong>Coinsurance:</strong> ${plan.coinsurance || 'N/A'} | <strong>Max:</strong> ${plan.annual_max || 'N/A'}</p>
+      `;
+
+      div.innerHTML = html;
+      return div;
+    }
+
+    async function fetchFilters() {
+      const res = await fetch("/api/filters");
+      const data = await res.json();
+      const countySelect = document.getElementById("countyFilter");
+      const issuerSelect = document.getElementById("issuerFilter");
+      const typeSelect = document.getElementById("typeFilter");
+
+      data.counties.forEach(c => {
+        let o = document.createElement("option");
+        o.value = c; o.text = c;
+        countySelect.appendChild(o);
+      });
+      data.issuers.forEach(i => {
+        let o = document.createElement("option");
+        o.value = i; o.text = i;
+        issuerSelect.appendChild(o);
+      });
+      data.plan_types.forEach(p => {
+        let o = document.createElement("option");
+        o.value = p; o.text = p;
+        typeSelect.appendChild(o);
+      });
+    }
+
+    async function fetchPlans() {
+      const county = document.getElementById("countyFilter").value;
+      const issuer = document.getElementById("issuerFilter").value;
+      const planType = document.getElementById("typeFilter").value;
+      const search = document.getElementById("search").value;
+
+      let url = `/api/plans?`;
+      if (county) url += `county=${encodeURIComponent(county)}&`;
+      if (issuer) url += `issuer=${encodeURIComponent(issuer)}&`;
+      if (planType) url += `plan_type=${encodeURIComponent(planType)}&`;
+      if (search) url += `search=${encodeURIComponent(search)}`;
+
+      const res = await fetch(url);
+      const plans = await res.json();
+      allPlansData = plans;
+      renderPlans(plans);
+    }
+
+    function renderPlans(plans) {
+      const container = document.getElementById("plans");
+      container.innerHTML = '';
+      plans.forEach(plan => {
+        container.appendChild(createPlanCard(plan));
+      });
+    }
+
+    // 🔥 Save view history when a modal is opened
+    async function openModal(planId) {
+      const plan = allPlansData.find(p => p.plan_id === planId);
+      if (plan) {
+        const history = JSON.parse(localStorage.getItem('viewerHistory') || '[]');
+        const timestamp = new Date().toISOString();
+        const entry = {
+          plan_id: plan.plan_id,
+          plan_name: plan.plan_name,
+          county: plan.county,
+          timestamp: timestamp
+        };
+        if (!history.length || history[history.length - 1].plan_id !== plan.plan_id) {
+          history.push(entry);
+          localStorage.setItem('viewerHistory', JSON.stringify(history));
+        }
+      }
+
+      const res = await fetch(`/api/plans/${planId}/details`);
+      const details = await res.json();
+      document.getElementById("modalTitle").innerText = details.plan_id;
+      document.getElementById("modalId").innerText = "Keyword Mentions:";
+      const content = document.getElementById("modalContent");
+      content.innerHTML = `
+        <div class="grid grid-cols-2 gap-3">
+          ${Object.entries(details.keywords).map(([k, v]) => `<div><strong class="capitalize">${k}</strong>: ${v}</div>`).join('')}
+        </div>
+        <h3 class="mt-4 font-semibold text-gray-800">Coverage:</h3>
+        <ul class="text-sm">
+          ${Object.entries(details.coverage).map(([k, v]) => `<li class="capitalize">${k}: ${v}</li>`).join('')}
+        </ul>
+      `;
+      document.getElementById("modal").classList.remove("hidden");
+      document.getElementById("modal").classList.add("flex");
+    }
+
+    // 🧠 Viewer History Renderer
+    function showViewerHistory() {
+      const history = JSON.parse(localStorage.getItem('viewerHistory') || '[]');
+      const list = document.getElementById('history-list');
+      list.innerHTML = '';
+
+      if (history.length === 0) {
+        list.innerHTML = '<li class="text-gray-500">No plans viewed yet.</li>';
+      } else {
+        history.slice().reverse().forEach(entry => {
+          const date = new Date(entry.timestamp);
+          const formatted = date.toLocaleString();
+          const li = document.createElement('li');
+          li.innerHTML = `<strong>${entry.plan_name}</strong> (${entry.county}) <span class="text-gray-500 ml-2">[${formatted}]</span>`;
+          list.appendChild(li);
+        });
+      }
+
+      document.getElementById('history-section').classList.remove('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById("modal").classList.add("hidden");
+      document.getElementById("modal").classList.remove("flex");
+    }
+
+    document.getElementById("countyFilter").onchange = fetchPlans;
+    document.getElementById("issuerFilter").onchange = fetchPlans;
+    document.getElementById("typeFilter").onchange = fetchPlans;
+    document.getElementById("search").oninput = fetchPlans;
+
+    window.onload = () => {
+      fetchFilters();
+      fetchPlans();
+    };
+  </script>
+</body>
+</html>
+""")
+
+@app.get("/api/plans", response_model=List[Plan])
+async def get_plans(
+    county: Optional[str] = Query(None),
+    issuer: Optional[str] = Query(None),
+    plan_type: Optional[str] = Query(None),
+    search: Optional[str] = Query(None)
+):
+    df = df_plans.copy()
+    if county:
+        df = df[df["County Name"].str.strip() == county]
+    if issuer:
+        df = df[df["Issuer Name"].str.strip() == issuer]
+    if plan_type:
+        df = df[df["Plan Type"].str.strip() == plan_type]
+    if search:
+        s = search.lower()
+        df = df[df["Plan Marketing Name"].str.lower().str.contains(s) | df["Issuer Name"].str.lower().str.contains(s)]
+    return [
+        Plan(
+            plan_id=row["Plan ID (Standard Component)"],
+            plan_name=row["Plan Marketing Name"],
+            issuer_name=row["Issuer Name"],
+            county=row["County Name"],
+            plan_type=row["Plan Type"],
+            deductible=row.get("Deductible"),
+            coinsurance=row.get("Coinsurance"),
+            annual_max=row.get("Annual Maximum"),
+            network_url=row.get("Network URL"),
+            brochure_url=row.get("Brochure URL")
+        ) for _, row in df.iterrows()
+    ]
+
+@app.get("/api/plans/{plan_id}/details")
+async def get_plan_details(plan_id: str):
+    row = df_plans[df_plans["Plan ID (Standard Component)"] == plan_id].iloc[0]
+    text = row["Plan Marketing Name"]
+    keywords = ["dental", "crown", "copay", "deductible", "cleaning", "orthodontics", "implant", "root canal"]
+    keyword_counts = {k: len(re.findall(rf"\\b{k}\\b", text.lower())) for k in keywords}
+    coverage = {"preventive": "100%", "basic": "80%", "major": "50%", "orthodontics": "50%"}
+    return {"plan_id": plan_id, "keywords": keyword_counts, "coverage": coverage}
+
+@app.get("/api/filters")
+async def get_filters():
+    return {
+        "counties": sorted(df_plans["County Name"].dropna().unique().tolist()),
+        "issuers": sorted(df_plans["Issuer Name"].dropna().unique().tolist()),
+        "plan_types": sorted(df_plans["Plan Type"].dropna().unique().tolist())
+    }
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="127.0.0.1", port=8000, reload=True)
 
