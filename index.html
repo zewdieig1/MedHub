@@ -1,108 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MedHub - Dental Insurance Navigator</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/feather-icons"></script>
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              primary: '#3B82F6',
-              secondary: '#10B981',
-            }
-          }
-        }
-      }
-    </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MedHub | Dental Insurance Helper</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body class="bg-gray-50">
-    <custom-navbar></custom-navbar>
-    
-    <main class="container mx-auto px-4 py-8">
-        <!-- Hero Section -->
-        <section class="hero bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-xl p-8 mb-12">
-            <div class="max-w-3xl mx-auto text-center">
-                <h1 class="text-4xl font-bold mb-4">Find the Perfect Dental Insurance Plan</h1>
-                <p class="text-xl mb-6">Compare plans, check ER wait times, and make informed decisions about your dental health coverage.</p>
-                <div class="flex justify-center gap-4">
-                    <a href="/plans.html" class="bg-white text-primary-600 px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition">Browse Plans</a>
-                    <a href="/er-times.html" class="bg-transparent border-2 border-white px-6 py-3 rounded-lg font-medium hover:bg-white hover:text-primary-600 transition">ER Wait Times</a>
-                </div>
-            </div>
-        </section>
+<body>
+  <header class="topbar">
+    <div class="brand">MedHub</div>
+    <nav class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#plans">Plans</a>
+      <a href="#er">ER Wait</a>
+    </nav>
+    <button class="cta">Create Account</button>
+  </header>
 
-        <!-- Features Grid -->
-        <section class="mb-16">
-            <h2 class="text-3xl font-bold text-center mb-12">Why Choose MedHub?</h2>
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition">
-                    <div class="text-primary-500 mb-4">
-                        <i data-feather="search" class="w-10 h-10"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">Advanced Search</h3>
-                    <p class="text-gray-600">Filter and sort dental insurance plans based on your specific needs and budget.</p>
-                </div>
-                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition">
-                    <div class="text-secondary-500 mb-4">
-                        <i data-feather="clock" class="w-10 h-10"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">ER Wait Times</h3>
-                    <p class="text-gray-600">Real-time emergency room wait times to help you make informed decisions.</p>
-                </div>
-                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition">
-                    <div class="text-primary-500 mb-4">
-                        <i data-feather="heart" class="w-10 h-10"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">Personalized Recommendations</h3>
-                    <p class="text-gray-600">Get plan suggestions tailored to your dental health needs and preferences.</p>
-                </div>
-            </div>
-        </section>
+  <main>
+    <section class="hero">
+      <div>
+        <p class="eyebrow">Dental insurance made simple</p>
+        <h1>Find the right coverage without getting lost in jargon.</h1>
+        <p class="lede">
+          MedHub brings dental insurance plans, filtering tools, and ER wait time awareness
+          together in one workspace so you can make confident choices fast.
+        </p>
+        <div class="hero-actions">
+          <button class="cta">Start a search</button>
+          <button class="ghost">See how it works</button>
+        </div>
+        <div class="pill-group">
+          <span class="pill">Plan catalog search</span>
+          <span class="pill">Smart sorting</span>
+          <span class="pill">Live ER context</span>
+        </div>
+      </div>
+      <div class="hero-card" aria-label="Plan highlight">
+        <h2>Featured plan</h2>
+        <p class="plan-name">BrightSmile Preferred PPO</p>
+        <ul class="plan-meta">
+          <li><strong>$38</strong> / month premium</li>
+          <li><strong>$50</strong> annual deductible</li>
+          <li><strong>80%</strong> coverage for preventative</li>
+        </ul>
+        <p class="plan-note">Great for families wanting orthodontic coverage with nationwide providers.</p>
+      </div>
+    </section>
 
-        <!-- Testimonials -->
-        <section class="bg-gray-100 p-8 rounded-xl">
-            <h2 class="text-2xl font-bold text-center mb-8">What Our Users Say</h2>
-            <div class="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-                <div class="bg-white p-6 rounded-lg shadow-sm">
-                    <div class="flex items-center mb-4">
-                        <div class="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center mr-4">
-                            <i data-feather="user" class="text-primary-500"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold">Sarah J.</h4>
-                            <p class="text-sm text-gray-500">Dental Patient</p>
-                        </div>
-                    </div>
-                    <p class="text-gray-700">"MedHub helped me find an affordable dental plan that covered my root canal. The ER wait time feature saved me hours!"</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-sm">
-                    <div class="flex items-center mb-4">
-                        <div class="w-12 h-12 rounded-full bg-secondary-100 flex items-center justify-center mr-4">
-                            <i data-feather="user" class="text-secondary-500"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold">Michael T.</h4>
-                            <p class="text-sm text-gray-500">Small Business Owner</p>
-                        </div>
-                    </div>
-                    <p class="text-gray-700">"As someone who provides insurance for employees, MedHub's comparison tools are invaluable for making the right choices."</p>
-                </div>
-            </div>
-        </section>
-    </main>
+    <section id="features" class="feature-grid">
+      <article>
+        <h3>Insurance plan search</h3>
+        <p>Browse dental plans side-by-side, compare benefits, and save your favorites.</p>
+      </article>
+      <article>
+        <h3>Sorting and filtering</h3>
+        <p>Filter by coverage type, deductible, monthly cost, and in-network preferences.</p>
+      </article>
+      <article>
+        <h3>ER wait time insight</h3>
+        <p>Stay informed on emergency room wait trends in your area before you head out.</p>
+      </article>
+    </section>
 
-    <custom-footer></custom-footer>
-    
-    <script src="components/navbar.js"></script>
-    <script src="components/footer.js"></script>
-    <script src="script.js"></script>
-    <script>feather.replace();</script>
-<script src="https://huggingface.co/deepsite/deepsite-badge.js"></script>
+    <section class="panel steps">
+      <div class="panel-header">
+        <div>
+          <p class="eyebrow">Project game plan</p>
+          <h2>How MedHub will ship</h2>
+          <p class="panel-subtitle">Walkthrough of the first release so everyone on the team knows the target.</p>
+        </div>
+      </div>
+      <ol class="step-list">
+        <li>
+          <h3>Define plan data model</h3>
+          <p>Agree on provider, network, coverage, and eligibility fields, then scaffold a JSON schema.</p>
+        </li>
+        <li>
+          <h3>Connect real sources</h3>
+          <p>Swap sample data for API-backed plan search and add ER wait feeds from public hospital endpoints.</p>
+        </li>
+        <li>
+          <h3>Authentication & profiles</h3>
+          <p>Implement signup, persistent saved plans, and profile-based recommendations.</p>
+        </li>
+        <li>
+          <h3>Accessibility & polish</h3>
+          <p>Keyboard-friendly filters, aria labels, and responsive tweaks for mobile-first usability.</p>
+        </li>
+      </ol>
+    </section>
+
+    <section id="plans" class="panel">
+      <div class="panel-header">
+        <div>
+          <p class="eyebrow">Dental plan finder</p>
+          <h2>Search, sort, and filter</h2>
+          <p class="panel-subtitle">Adjust the controls to see plans update instantly.</p>
+        </div>
+        <div class="controls">
+          <label class="control">
+            <span>Search</span>
+            <input type="search" id="search" placeholder="e.g. PPO, orthodontics, student" />
+          </label>
+          <label class="control">
+            <span>Network</span>
+            <select id="network">
+              <option value="">Any</option>
+              <option value="PPO">PPO</option>
+              <option value="HMO">HMO</option>
+              <option value="EPO">EPO</option>
+            </select>
+          </label>
+          <label class="control">
+            <span>Max premium ($)</span>
+            <input type="range" id="premium" min="20" max="80" value="80" />
+            <output id="premium-value">$80</output>
+          </label>
+          <label class="control">
+            <span>Sort by</span>
+            <select id="sort">
+              <option value="premium">Monthly premium</option>
+              <option value="deductible">Deductible</option>
+              <option value="coverage">Preventative coverage</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <div id="plan-results" class="plan-grid" aria-live="polite"></div>
+    </section>
+
+    <section id="er" class="panel">
+      <div class="panel-header">
+        <div>
+          <p class="eyebrow">Emergency care awareness</p>
+          <h2>ER wait times nearby</h2>
+          <p class="panel-subtitle">Use this snapshot to plan smart, non-emergency visits.</p>
+        </div>
+        <button class="ghost" id="refresh-er">Refresh sample data</button>
+      </div>
+      <div id="er-list" class="er-grid" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div>
+      <div class="brand">MedHub</div>
+      <p class="footer-text">A class project built to simplify dental coverage decisions.</p>
+    </div>
+    <div class="footer-links">
+      <a href="#">Privacy</a>
+      <a href="#">Accessibility</a>
+      <a href="#">Support</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
