@@ -11,14 +11,6 @@ https://docs.google.com/document/d/11FL64EoB6v9foHtBBdztM4g4KK9vRDJA5s0-uT1yMXA/
 # Link to Project Presentation 10/22
 https://docs.google.com/presentation/d/1pd3wO-VcSjIu5IyBfEUgRBJblETb9KPS_r91ngJ8zUo/edit?slide=id.g37a9bdaa5b1_0_610#slide=id.g37a9bdaa5b1_0_610
 
-# MedHub prototype
-
-A static prototype for **MedHub**, a class project website that simplifies dental insurance selection. The page showcases:
-
-- A hero section describing the product value.
-- Feature highlights for insurance search, sorting/filtering, and ER wait awareness.
-- An interactive plan finder with search, network filter, premium slider, and sorting controls.
-- Sample ER wait time cards with a refresh action to shuffle data.
 
 ## Running locally
 
