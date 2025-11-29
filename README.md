@@ -16,7 +16,7 @@ https://docs.google.com/presentation/d/1pd3wO-VcSjIu5IyBfEUgRBJblETb9KPS_r91ngJ8
 
 Follow these steps to view the static prototype in your browser:
 
-1. **Install Python (if needed).** Python 3 comes preinstalled on macOS and most Linux distributions. On Windows, install it from the [official download page](https://www.python.org/downloads/). Any Python 3.8+ version works.
+1. **Install Python (if needed).** 
 2. **Open a terminal in the project folder.**
    - On **Windows**: press `Win + R`, type `cmd`, and press Enter to open Command Prompt. If you downloaded a ZIP from GitHub, unzip it first, then run `cd` to the folder that contains `index.html` (example: `cd %HOMEPATH%\Downloads\delete-me`).
    - On **macOS**: press `Cmd + Space`, type `Terminal`, and hit Enter. If you cloned the repo, navigate to it with `cd ~/path/to/delete-me`.
@@ -35,10 +35,3 @@ Follow these steps to view the static prototype in your browser:
 - If the page doesn’t load, confirm you ran the server from the correct folder (the one containing `index.html`).
 - Some enterprise environments block `localhost`—try `http://127.0.0.1:8000` instead.
 - If you still see a directory listing instead of the page, ensure `index.html` exists in the directory where you started `python -m http.server`.
-
-## What to do next
-
-- Swap the sample plan and ER JSON in `script.js` with real data sources and document the API contract.
-- Add authentication and saved-plan flows so users can keep picks between sessions.
-- Polish accessibility: keyboardable filters, stronger color contrast, and aria labels on interactive elements.
-- Write lightweight Cypress or Playwright checks to keep the interactive filters and ER refresh from regressing.
