@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Log In | MedHub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="auth-page">
+    <a class="back-link" href="index.html">Back to homepage</a>
+
+    <section class="auth-shell" aria-labelledby="login-heading">
+      <p class="eyebrow">Welcome back</p>
+      <h1 id="login-heading">Log in to MedHub</h1>
+      <p>Sign in to pick up where you left off, access your saved plans, and continue exploring coverage options.</p>
+
+      <form class="auth-form" action="#" method="post">
+        <label>
+          <span>Email address</span>
+          <input type="email" name="email" placeholder="you@example.com" autocomplete="email" required />
+        </label>
+        <label>
+          <span>Password</span>
+          <input type="password" name="password" placeholder="Your password" autocomplete="current-password" required />
+        </label>
+
+        <div class="auth-actions-row">
+          <button class="cta" type="submit">Log in</button>
+          <p class="auth-meta">New to MedHub? <a href="create-account.html">Create an account</a></p>
+        </div>
+      </form>
+    </section>
+  </main>
+</body>
+</html>
