@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Account | MedHub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="auth-page">
+    <a class="back-link" href="index.html">Back to homepage</a>
+
+    <section class="auth-shell" aria-labelledby="create-account-heading">
+      <p class="eyebrow">Get started</p>
+      <h1 id="create-account-heading">Create your MedHub account</h1>
+      <p>Set up your account so you can save favorite plans, review coverage options, and come back later without losing your work.</p>
+
+      <form class="auth-form" action="#" method="post">
+        <label>
+          <span>Full name</span>
+          <input type="text" name="fullName" placeholder="Alex Johnson" autocomplete="name" required />
+        </label>
+        <label>
+          <span>Email address</span>
+          <input type="email" name="email" placeholder="you@example.com" autocomplete="email" required />
+        </label>
+        <label>
+          <span>Create password</span>
+          <input type="password" name="password" placeholder="At least 8 characters" autocomplete="new-password" required />
+        </label>
+        <label>
+          <span>Confirm password</span>
+          <input type="password" name="confirmPassword" placeholder="Re-enter your password" autocomplete="new-password" required />
+        </label>
+        <label>
+          <span>Coverage interest</span>
+          <select name="interest" required>
+            <option value="">Choose one</option>
+            <option value="family">Family plans</option>
+            <option value="orthodontics">Orthodontics</option>
+            <option value="student">Student coverage</option>
+            <option value="preventative">Preventative care</option>
+          </select>
+        </label>
+
+        <div class="auth-actions-row">
+          <button class="cta" type="submit">Create account</button>
+          <p class="auth-meta">Already have an account? <a href="login.html">Log in</a></p>
+        </div>
+      </form>
+    </section>
+  </main>
+</body>
+</html>
