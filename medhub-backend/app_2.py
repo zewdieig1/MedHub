@@ -75,15 +75,16 @@ async def plans_page(state: Optional[str] = "WI"):
       border-bottom: 4px solid transparent;
       transition: background 0.3s, border-bottom-color 0.3s;
       font-size: 1.15rem;
+      color: #e5e7eb;
     }}
     .tab.active {{
-      border-bottom-color: #496ddb;
-      color: #243d7c;
-      background: linear-gradient(90deg, #ffffff 30%, #fef08a 50%, #a4d8fa 100%);
+      border-bottom-color: #22c55e;
+      color: #e5e7eb;
+      background: linear-gradient(90deg, #0f172a 0%, #0f766e 50%, #22c55e 100%);
       font-weight: 700;
     }}
     .tab:hover {{
-      background: linear-gradient(90deg, #bae6fd 60%, #fef9c3 100%);
+      background: linear-gradient(90deg, #0f172a 0%, #0f766e 60%, #22c55e 100%);
     }}
     .bookmark-badge {{
       position: absolute;
@@ -93,73 +94,98 @@ async def plans_page(state: Optional[str] = "WI"):
       cursor: pointer;
       z-index: 10;
       transition: transform 0.2s;
-      color: #2563eb;
+      color: #22c55e;
     }}
     .bookmark-badge:hover {{
       transform: scale(1.2) rotate(-8deg);
-      filter: drop-shadow(0 0 10px #fbcd09);
+      filter: drop-shadow(0 0 10px #22c55e);
     }}
     .plan-card {{
-      background: linear-gradient(120deg, #e0e7ff 0%, #bae6fd 100%);
+      background: linear-gradient(135deg, #020617 0%, #0f172a 60%, #0f766e 100%);
       border-radius: 18px;
-      box-shadow: 0 4px 24px rgba(32,35,89,0.08);
+      box-shadow: 0 4px 24px rgba(15,23,42,0.8);
       transition: box-shadow 0.3s, transform 0.3s;
+      color: #e5e7eb;
     }}
     .plan-card:hover, .plan-card:focus {{
-      box-shadow: 0 6px 32px rgba(73,109,219,0.18);
+      box-shadow: 0 6px 32px rgba(34,197,94,0.4);
       transform: translateY(-3px) scale(1.01);
       outline: none;
     }}
     .filter-box {{
-      background: linear-gradient(90deg, #2563eb 20%, #bae6fd 70%, #fef08a 100%);
+      background: linear-gradient(120deg, #020617 0%, #0f172a 60%, #0f766e 100%);
       border-radius: 14px;
-      box-shadow: 0 6px 24px #cffafe44;
+      box-shadow: 0 6px 24px rgba(15,23,42,0.9);
+      color: #e5e7eb;
     }}
     .modal-content {{
-      background: linear-gradient(102deg, #e0e7ff 70%, #fef9c3 100%);
+      background: linear-gradient(135deg, #020617 0%, #0f172a 60%, #0f766e 100%);
       border-radius: 16px;
       max-height: 80vh;
       overflow-y: auto;
+      color: #e5e7eb;
     }}
     body {{
-      background: linear-gradient(to top right,#2563eb 0%, #a4d8fa 80%, #fef08a 100%);
+      background: radial-gradient(circle at top, #020617 0%, #020617 45%, #020617 100%);
+      color: #e5e7eb;
     }}
     .external-link {{
       display: inline-block;
       padding: 0.5rem 1rem;
-      background: #2563eb;
-      color: white;
+      background: linear-gradient(90deg, #22c55e 0%, #14b8a6 100%);
+      color: #0f172a;
       border-radius: 0.5rem;
       text-decoration: none;
       margin: 0.5rem 0;
-      transition: background 0.2s;
+      transition: transform 0.2s, box-shadow 0.2s;
+      font-weight: 600;
     }}
     .external-link:hover {{
-      background: #1d4ed8;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(34,197,94,0.5);
     }}
     .modal-section {{
       margin: 1rem 0;
       padding: 1rem;
-      background: rgba(255, 255, 255, 0.5);
+      background: rgba(15, 23, 42, 0.8);
       border-radius: 0.5rem;
     }}
   </style>
 </head>
 <body class="min-h-screen">
-  <header class="bg-white shadow-lg py-7 px-6 rounded-b-3xl mb-1 flex flex-col sm:flex-row items-center justify-between">
+  <header class="bg-slate-950 shadow-lg py-7 px-6 rounded-b-3xl mb-1 flex flex-col sm:flex-row items-center justify-between">
     <div>
-      <h1 class="text-3xl sm:text-4xl font-extrabold text-blue-900 tracking-tight mb-1">
-        <span class="bg-gradient-to-r from-blue-700 via-blue-400 to-yellow-400 bg-clip-text text-transparent">
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-100 tracking-tight mb-1">
+        <span class="text-white" id="state-title-span">
           {"Wisconsin" if state=="WI" else "Illinois"} Dental Plans
         </span>
       </h1>
-      <p class="text-lg text-blue-700 font-medium">Compare and filter 2025 individual dental coverage</p>
+      <p class="text-lg text-gray-300 font-medium">Compare and filter 2025 individual dental coverage</p>
+      <!-- STATE TOGGLE BUTTONS -->
+      <div class="mt-3 flex gap-3 items-center">
+        <button
+          type="button"
+          onclick="changeState('WI')"
+          class="px-3 py-1 rounded-full text-xs font-semibold border
+                 border-teal-400 text-teal-200 bg-slate-900/70 hover:bg-teal-500 hover:text-slate-950"
+        >
+          Wisconsin
+        </button>
+        <button
+          type="button"
+          onclick="changeState('IL')"
+          class="px-3 py-1 rounded-full text-xs font-semibold border
+                 border-teal-400 text-teal-200 bg-slate-900/70 hover:bg-teal-500 hover:text-slate-950"
+        >
+          Illinois
+        </button>
+      </div>
     </div>
-    <img src="https://cdn.jsdelivr.net/gh/hfg-gmuend/openmoji@latest/color/svg/1F9B7.svg" alt="Tooth Icon" class="w-16 h-16 hidden sm:block ml-4" style="filter: drop-shadow(0 2px 8px #60a5fa;" />
+    <img src="https://cdn.jsdelivr.net/gh/hfg-gmuend/openmoji@latest/color/svg/1F9B7.svg" alt="Tooth Icon" class="w-16 h-16 hidden sm:block ml-4" style="filter: drop-shadow(0 2px 8px rgba(34,197,94,0.6));" />
   </header>
   <main class="max-w-7xl mx-auto px-4 py-7">
-    <div class="bg-gradient-to-r from-white via-blue-50 to-yellow-50 rounded-t-2xl shadow mb-0">
-      <div class="flex border-b border-blue-200">
+    <div class="bg-slate-900/60 rounded-t-2xl shadow mb-0 border border-slate-800">
+      <div class="flex border-b border-slate-700">
         <div class="tab active" onclick="switchTab('all')" id="tab-all">
           <span class="mr-2">🗂️</span>All Plans
         </div>
@@ -176,29 +202,29 @@ async def plans_page(state: Optional[str] = "WI"):
       <div class="grid md:grid-cols-3 gap-6 items-start">
         <div class="md:col-span-2">
           <div class="grid md:grid-cols-4 gap-5">
-            <input id="search" placeholder="Search plans..." class="border border-blue-700 bg-white px-3 py-2 rounded-lg w-full focus:ring focus:ring-blue-200 transition" />
-            <select id="countyFilter" class="border border-blue-300 px-3 py-2 rounded-lg w-full bg-white focus:ring focus:ring-blue-200">
-              <option value="">All Counties</option>
+            <input id="search" placeholder="Search plans..." class="border border-slate-600 bg-slate-900 text-gray-700 px-3 py-2 rounded-lg w-full focus:ring focus:ring-teal-500/40 transition" />
+            <select id="countyFilter"class="border border-slate-600 px-3 py-2 rounded-lg w-full bg-slate-900 text-gray-700 focus:ring focus:ring-teal-500/40">
+              <option value="" class="text-gray-800">All Counties</option>
             </select>
-            <select id="issuerFilter" class="border border-blue-200 px-3 py-2 rounded-lg w-full bg-white focus:ring focus:ring-blue-100">
-              <option value="">All Issuers</option>
+            <select id="issuerFilter" class="border border-slate-600 px-3 py-2 rounded-lg w-full bg-slate-900 text-gray-700 focus:ring focus:ring-teal-500/40">
+              <option value="" class="text-gray-800">All Counties</option>
             </select>
-            <select id="typeFilter" class="border border-yellow-300 px-3 py-2 rounded-lg w-full bg-white focus:ring focus:ring-yellow-100">
-              <option value="">All Plan Types</option>
+            <select id="typeFilter" class="border border-teal-500 px-3 py-2 rounded-lg w-full bg-slate-900 text-gray-700 focus:ring focus:ring-teal-500/40">
+              <option value="" class="text-gray-800">All Counties</option>
             </select>
           </div>
         </div>
 
-        <div id="your-plan-panel" class="mt-5 md:mt-0 bg-white bg-opacity-80 rounded-xl shadow-md p-4">
-          <h3 class="text-lg font-semibold text-blue-900 mb-2">Your Plan</h3>
-          <p id="your-plan-empty" class="text-sm text-blue-500">
+        <div id="your-plan-panel" class="mt-5 md:mt-0 bg-slate-900/80 rounded-xl shadow-md p-4 border border-slate-700">
+          <h3 class="text-lg font-semibold text-gray-100 mb-2">Your Plan</h3>
+          <p id="your-plan-empty" class="text-sm text-gray-400">
             You have not selected a plan yet.
           </p>
-          <div id="your-plan-content" class="hidden text-sm text-blue-800 space-y-1">
-            <p><span class="font-semibold">Name:</span> <span id="your-plan-name"></span></p>
-            <p><span class="font-semibold">Plan ID:</span> <span id="your-plan-id"></span></p>
-            <p><span class="font-semibold">County:</span> <span id="your-plan-county"></span></p>
-            <p><span class="font-semibold">Type:</span> <span id="your-plan-type"></span></p>
+          <div id="your-plan-content" class="hidden text-sm text-gray-200 space-y-1">
+            <p><span class="font-semibold text-teal-300">Name:</span> <span id="your-plan-name"></span></p>
+            <p><span class="font-semibold text-teal-300">Plan ID:</span> <span id="your-plan-id"></span></p>
+            <p><span class="font-semibold text-teal-300">County:</span> <span id="your-plan-county"></span></p>
+            <p><span class="font-semibold text-teal-300">Type:</span> <span id="your-plan-type"></span></p>
             <button onclick="clearYourPlan()" class="mt-2 px-3 py-1 rounded-full bg-red-500 text-white text-xs font-semibold hover:bg-red-600">
               Clear selection
             </button>
@@ -209,22 +235,24 @@ async def plans_page(state: Optional[str] = "WI"):
 
     <div id="plans" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
     <div id="bookmarked-plans" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 hidden"></div>
-    <div id="empty-bookmarks" class="hidden bg-white p-14 rounded-2xl shadow text-center flex flex-col items-center justify-center">
+    <div id="empty-bookmarks" class="hidden bg-slate-900/80 p-14 rounded-2xl shadow text-center flex flex-col items-center justify-center border border-slate-700">
       <img src="https://cdn.jsdelivr.net/gh/hfg-gmuend/openmoji@latest/color/svg/1F516.svg" alt="Bookmark Icon" class="w-20 h-20 mt-2 mb-6"/>
-      <h3 class="text-2xl font-bold text-blue-700 mb-2">No Bookmarked Plans</h3>
-      <p class="text-blue-400 mb-3">Click the bookmark icon ⭐ on any plan to save it here for quick access.</p>
-      <button onclick="switchTab('all')" class="mt-4 px-8 py-2 rounded-full bg-gradient-to-r from-blue-700 via-blue-400 to-yellow-400 text-white text-lg font-bold shadow transition hover:scale-105">Browse All Plans</button>
+      <h3 class="text-2xl font-bold text-gray-100 mb-2">No Bookmarked Plans</h3>
+      <p class="text-gray-400 mb-3">Click the bookmark icon ⭐ on any plan to save it here for quick access.</p>
+      <button onclick="switchTab('all')" class="mt-4 px-8 py-2 rounded-full bg-gradient-to-r from-green-500 via-teal-500 to-green-400 text-slate-950 text-lg font-bold shadow transition hover:scale-105">
+        Browse All Plans
+      </button>
     </div>
-    <div id="history-section" class="hidden bg-gradient-to-r from-white via-yellow-100 to-blue-50 p-7 rounded-2xl shadow-lg mt-7">
-      <h2 class="text-xl font-bold text-blue-800 mb-3">Viewer History</h2>
-      <ul id="history-list" class="text-base text-blue-700 space-y-3"></ul>
+    <div id="history-section" class="hidden bg-slate-900/80 p-7 rounded-2xl shadow-lg mt-7 border border-slate-700">
+      <h2 class="text-xl font-bold text-gray-100 mb-3">Viewer History</h2>
+      <ul id="history-list" class="text-base text-gray-300 space-y-3"></ul>
     </div>
-    <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 transition">
-      <div class="modal-content max-w-2xl w-full rounded-xl shadow-2xl p-8 relative flex flex-col">
-        <button onclick="closeModal()" class="absolute top-3 right-3 text-blue-700 hover:text-yellow-500 text-3xl focus:outline-none bg-gradient-to-r from-blue-50 via-yellow-100 to-blue-100 px-2 py-1 rounded-full">
+    <div id="modal" class="fixed inset-0 bg-black bg-opacity-70 hidden items-center justify-center z-50 transition">
+      <div class="modal-content max-w-2xl w-full rounded-xl shadow-2xl p-8 relative flex flex-col border border-teal-600/60">
+        <button onclick="closeModal()" class="absolute top-3 right-3 text-teal-300 hover:text-green-400 text-3xl focus:outline-none bg-slate-900/80 px-2 py-1 rounded-full border border-slate-700">
           &times;
         </button>
-        <h2 id="modalTitle" class="text-2xl font-bold mb-2 text-blue-900"></h2>
+        <h2 id="modalTitle" class="text-2xl font-bold mb-2 text-gray-100"></h2>
         <div id="modalContent"></div>
       </div>
     </div>
@@ -236,6 +264,25 @@ async def plans_page(state: Optional[str] = "WI"):
   }}
   let state = getQueryParam('state') || localStorage.getItem('selectedState') || 'WI';
   localStorage.setItem('selectedState', state);
+
+  // Update header title on initial load to match state from URL/localStorage
+  window.addEventListener('DOMContentLoaded', () => {{
+    const titleSpan = document.getElementById('state-title-span');
+    if (titleSpan) {{
+      titleSpan.textContent = (state === 'WI' ? 'Wisconsin' : 'Illinois') + ' Dental Plans';
+    }}
+  }});
+
+  function changeState(newState) {{
+    state = newState;
+    localStorage.setItem('selectedState', newState);
+    const titleSpan = document.getElementById('state-title-span');
+    if (titleSpan) {{
+      titleSpan.textContent = (newState === 'WI' ? 'Wisconsin' : 'Illinois') + ' Dental Plans';
+    }}
+    fetchFilters();
+    fetchPlans();
+  }}
 
   let currentTab = 'all';
   let allPlansData = [];
@@ -308,13 +355,17 @@ async def plans_page(state: Optional[str] = "WI"):
     const bookmarkIcon = isBookmarked ? '⭐' : '☆';
     let html = `
       <div class="bookmark-badge" onclick="toggleBookmark('${{plan.plan_id}}', '${{plan.county}}', event)" title="${{isBookmarked ? 'Remove bookmark' : 'Bookmark this plan'}}">${{bookmarkIcon}}</div>
-      <h2 class="text-xl font-semibold text-blue-900 pr-10">${{plan.plan_name}}</h2>
-      <p class="text-blue-700 text-base">${{plan.plan_id}} <span class="mx-2">|</span> ${{plan.issuer_name}}</p>
-      <p class="text-base text-blue-700 mt-1"><span class="font-medium text-blue-700">County:</span> ${{plan.county}} <span class="mx-2">|</span> <span class="font-medium text-yellow-600">Type:</span> ${{plan.plan_type}}</p>
-      <div class="mt-3 text-sm space-y-1 text-blue-900">
-        <p><span class="font-semibold">Customer Service Local:</span> ${{plan.customer_service_local || 'Not listed'}}</p>
-        <p><span class="font-semibold">Customer Service Toll Free:</span> ${{plan.customer_service_toll_free || 'Not listed'}}</p>
-        <p><span class="font-semibold">Customer Service TTY:</span> ${{plan.customer_service_tty || 'Not listed'}}</p>
+      <h2 class="text-xl font-semibold text-gray-100 pr-10">${{plan.plan_name}}</h2>
+      <p class="text-gray-300 text-base">${{plan.plan_id}} <span class="mx-2 text-gray-500">|</span> ${{plan.issuer_name}}</p>
+      <p class="text-base text-gray-300 mt-1">
+        <span class="font-medium text-teal-300">County:</span> ${{plan.county}}
+        <span class="mx-2 text-gray-500">|</span>
+        <span class="font-medium text-teal-300">Type:</span> ${{plan.plan_type}}
+      </p>
+      <div class="mt-3 text-sm space-y-1 text-gray-200">
+        <p><span class="font-semibold text-teal-300">Customer Service Local:</span> ${{plan.customer_service_local || 'Not listed'}}</p>
+        <p><span class="font-semibold text-teal-300">Customer Service Toll Free:</span> ${{plan.customer_service_toll_free || 'Not listed'}}</p>
+        <p><span class="font-semibold text-teal-300">Customer Service TTY:</span> ${{plan.customer_service_tty || 'Not listed'}}</p>
       </div>
       <button 
         type="button"
@@ -325,7 +376,7 @@ async def plans_page(state: Optional[str] = "WI"):
           '${{String(plan.plan_type).replace(/'/g, "\\'")}}', 
           event
         )"
-        class="mt-3 inline-flex items-center px-3 py-1 rounded-full bg-gradient-to-r from-blue-700 to-blue-500 text-white text-xs font-semibold shadow hover:shadow-md">
+        class="mt-3 inline-flex items-center px-3 py-1 rounded-full bg-gradient-to-r from-green-500 to-teal-500 text-slate-950 text-xs font-semibold shadow hover:shadow-lg">
         ✅ Set as Your Plan
       </button>
     `;
@@ -416,10 +467,10 @@ async def plans_page(state: Optional[str] = "WI"):
 
     let extraDataHtml = '';
     if (details.extra_data && Object.keys(details.extra_data).length > 0) {{
-      extraDataHtml = '<div class="modal-section"><h3 class="font-semibold text-blue-700 mb-2">Additional Information</h3>';
+      extraDataHtml = '<div class="modal-section"><h3 class="font-semibold text-teal-300 mb-2">Additional Information</h3>';
       for (const [key, value] of Object.entries(details.extra_data)) {{
         if (value !== null && value !== '') {{
-          extraDataHtml += `<p class="text-sm text-blue-600"><strong>${{key}}:</strong> ${{value}}</p>`;
+          extraDataHtml += `<p class="text-sm text-gray-200"><strong>${{key}}:</strong> ${{value}}</p>`;
         }}
       }}
       extraDataHtml += '</div>';
@@ -427,13 +478,13 @@ async def plans_page(state: Optional[str] = "WI"):
 
     content.innerHTML = `
       <div class="modal-section">
-        <p class="text-blue-700"><strong>Plan ID:</strong> ${{details.plan_id}}</p>
-        <p class="text-blue-700"><strong>Issuer:</strong> ${{details.issuer_name}}</p>
-        <p class="text-blue-700"><strong>County:</strong> ${{details.county}}</p>
-        <p class="text-blue-700"><strong>Plan Type:</strong> ${{details.plan_type}}</p>
-        ${{details.rating_area ? `<p class="text-blue-700"><strong>Rating Area:</strong> ${{details.rating_area}}</p>` : ''}}
-        ${{details.child_only_offering ? `<p class="text-blue-700"><strong>Child Only Offering:</strong> ${{details.child_only_offering}}</p>` : ''}}
-        ${{details.metal_level ? `<p class="text-blue-700"><strong>Metal Level:</strong> ${{details.metal_level}}</p>` : ''}}
+        <p class="text-gray-200"><strong class="text-teal-300">Plan ID:</strong> ${{details.plan_id}}</p>
+        <p class="text-gray-200"><strong class="text-teal-300">Issuer:</strong> ${{details.issuer_name}}</p>
+        <p class="text-gray-200"><strong class="text-teal-300">County:</strong> ${{details.county}}</p>
+        <p class="text-gray-200"><strong class="text-teal-300">Plan Type:</strong> ${{details.plan_type}}</p>
+        ${{details.rating_area ? `<p class="text-gray-200"><strong class="text-teal-300">Rating Area:</strong> ${{details.rating_area}}</p>` : ''}}
+        ${{details.child_only_offering ? `<p class="text-gray-200"><strong class="text-teal-300">Child Only Offering:</strong> ${{details.child_only_offering}}</p>` : ''}}
+        ${{details.metal_level ? `<p class="text-gray-200"><strong class="text-teal-300">Metal Level:</strong> ${{details.metal_level}}</p>` : ''}}
       </div>
       <div class="modal-section">
         ${{brochureLink}}
@@ -450,13 +501,13 @@ async def plans_page(state: Optional[str] = "WI"):
     const list = document.getElementById('history-list');
     list.innerHTML = '';
     if (history.length === 0) {{
-      list.innerHTML = '<li class="text-blue-400">No plans viewed yet.</li>';
+      list.innerHTML = '<li class="text-gray-500">No plans viewed yet.</li>';
     }} else {{
       history.slice().reverse().forEach(entry => {{
         const date = new Date(entry.timestamp);
         const formatted = date.toLocaleString();
         const li = document.createElement('li');
-        li.innerHTML = `<strong class="text-blue-700">${{entry.plan_name}}</strong> <span class="text-yellow-600">(${{entry.county}})</span> <span class="text-blue-400 ml-2">[${{formatted}}]</span>`;
+        li.innerHTML = `<strong class="text-gray-100">${{entry.plan_name}}</strong> <span class="text-teal-300">(${{entry.county}})</span> <span class="text-gray-400 ml-2">[${{formatted}}]</span>`;
         list.appendChild(li);
       }});
     }}
@@ -535,11 +586,13 @@ async def get_plans(
     if plan_type:
         df = df[df["Plan Type"].astype(str).str.strip() == plan_type]
     if search:
-        s = search.lower()
+        s = str(search)
         df = df[
-            df["Plan Marketing Name"].astype(str).str.lower().str.contains(s) |
-            df["Issuer Name"].astype(str).str.lower().str.contains(s)
+            df["Plan Marketing Name"].astype(str).str.contains(s, case=False, na=False) |
+            df["Issuer Name"].astype(str).str.contains(s, case=False, na=False) |
+            df["Plan ID (Standard Component)"].astype(str).str.contains(s, case=False, na=False)
         ]
+
 
     plans: List[Plan] = []
     for _, row in df.iterrows():
