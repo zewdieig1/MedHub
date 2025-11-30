@@ -15,7 +15,7 @@ const plans = [
     deductible: 75,
     coverage: 70,
     network: 'HMO',
-    perks: ['Low copays', 'Local clinics', 'Preventative first'],
+    perks: ['Low copays', 'Local clinics', 'Preventive first'],
   },
   {
     name: 'FlexChoice Plus',
