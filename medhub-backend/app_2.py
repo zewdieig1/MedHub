@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from typing import Optional, List, Dict, Any
 import pandas as pd
 import re
+import math
 
 app = FastAPI(title="Wisco Dental Plans")
 df_plans = None
@@ -19,6 +20,9 @@ class Plan(BaseModel):
     annual_max: Optional[str]
     network_url: Optional[str]
     brochure_url: Optional[str]
+    customer_service_local: Optional[str]
+    customer_service_toll_free: Optional[str]
+    customer_service_tty: Optional[str]
 
 class PlanDetails(BaseModel):
     plan_id: str
@@ -45,69 +49,15 @@ def load_data():
     df.columns = df.columns.str.strip()
     df_plans = df
 
-@app.get("/", response_class=HTMLResponse)
-async def landing():
-    return HTMLResponse(content="""
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Select State - Dental Plans</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <style>
-    body { 
-      background: radial-gradient(circle at top, #eff6ff 0%, #dbeafe 45%, #1d4ed8 100%);
-    }
-    .card {
-      background: #ffffff;
-      border-radius: 1.5rem;
-      border: 1px solid #dbeafe;
-      box-shadow: 0 12px 40px rgba(15, 23, 42, 0.18);
-      transition: box-shadow 0.2s, transform 0.2s;
-    }
-    .card:hover {
-      box-shadow: 0 16px 50px rgba(37, 99, 235, 0.3);
-      transform: translateY(-2px);
-    }
-    .state-btn {
-      transition: transform 0.1s, box-shadow 0.1s;
-    }
-    .state-btn:hover { 
-      transform: scale(1.04); 
-      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
-    }
-  </style>
-</head>
-<body class="min-h-screen flex items-center justify-center">
-  <div class="card max-w-xl w-full mx-auto p-12 text-center">
-    <img src="https://cdn.jsdelivr.net/gh/hfg-gmuend/openmoji@latest/color/svg/1F9B7.svg"
-        class="w-20 h-20 mx-auto mb-4" style="filter: drop-shadow(0 1px 3px rgba(37,99,235,0.3));" />
-    <h1 class="text-3xl font-extrabold text-blue-900 mb-3 tracking-tight">
-      Wisco Dental Plans
-    </h1>
-    <p class="mb-8 text-blue-700 text-lg">
-      Choose your state to browse individual dental coverage options.
-    </p>
-    <div class="flex flex-col sm:flex-row gap-6 items-center justify-center">
-      <button onclick="selectState('WI')" 
-              class="state-btn w-40 py-3 rounded-xl shadow bg-gradient-to-br from-blue-700 via-blue-600 to-blue-500 text-white text-xl font-semibold">
-        Wisconsin
-      </button>
-      <button onclick="selectState('IL')" 
-              class="state-btn w-40 py-3 rounded-xl shadow bg-gradient-to-br from-blue-500 via-blue-400 to-blue-300 text-blue-950 text-xl font-semibold">
-        Illinois
-      </button>
-    </div>
-  </div>
-  <script>
-    function selectState(state) {
-      localStorage.setItem('selectedState', state);
-      window.location.href = '/plans?state=' + state;
-    }
-  </script>
-</body>
-</html>
-    """)
+def safe_str(val: Any) -> Optional[str]:
+    if val is None:
+        return None
+    if isinstance(val, float) and math.isnan(val):
+        return None
+    s = str(val)
+    if s.strip() == "":
+        return None
+    return s
 
 @app.get("/plans", response_class=HTMLResponse)
 async def plans_page(state: Optional[str] = "WI"):
@@ -221,20 +171,42 @@ async def plans_page(state: Optional[str] = "WI"):
         </div>
       </div>
     </div>
+
     <div class="filter-box p-5 mb-8" id="filters-section">
-      <div class="grid md:grid-cols-4 gap-5">
-        <input id="search" placeholder="Search plans..." class="border border-blue-700 bg-white px-3 py-2 rounded-lg w-full focus:ring focus:ring-blue-200 transition" />
-        <select id="countyFilter" class="border border-blue-300 px-3 py-2 rounded-lg w-full bg-white focus:ring focus:ring-blue-200">
-          <option value="">All Counties</option>
-        </select>
-        <select id="issuerFilter" class="border border-blue-200 px-3 py-2 rounded-lg w-full bg-white focus:ring focus:ring-blue-100">
-          <option value="">All Issuers</option>
-        </select>
-        <select id="typeFilter" class="border border-yellow-300 px-3 py-2 rounded-lg w-full bg-white focus:ring focus:ring-yellow-100">
-          <option value="">All Plan Types</option>
-        </select>
+      <div class="grid md:grid-cols-3 gap-6 items-start">
+        <div class="md:col-span-2">
+          <div class="grid md:grid-cols-4 gap-5">
+            <input id="search" placeholder="Search plans..." class="border border-blue-700 bg-white px-3 py-2 rounded-lg w-full focus:ring focus:ring-blue-200 transition" />
+            <select id="countyFilter" class="border border-blue-300 px-3 py-2 rounded-lg w-full bg-white focus:ring focus:ring-blue-200">
+              <option value="">All Counties</option>
+            </select>
+            <select id="issuerFilter" class="border border-blue-200 px-3 py-2 rounded-lg w-full bg-white focus:ring focus:ring-blue-100">
+              <option value="">All Issuers</option>
+            </select>
+            <select id="typeFilter" class="border border-yellow-300 px-3 py-2 rounded-lg w-full bg-white focus:ring focus:ring-yellow-100">
+              <option value="">All Plan Types</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="your-plan-panel" class="mt-5 md:mt-0 bg-white bg-opacity-80 rounded-xl shadow-md p-4">
+          <h3 class="text-lg font-semibold text-blue-900 mb-2">Your Plan</h3>
+          <p id="your-plan-empty" class="text-sm text-blue-500">
+            You have not selected a plan yet.
+          </p>
+          <div id="your-plan-content" class="hidden text-sm text-blue-800 space-y-1">
+            <p><span class="font-semibold">Name:</span> <span id="your-plan-name"></span></p>
+            <p><span class="font-semibold">Plan ID:</span> <span id="your-plan-id"></span></p>
+            <p><span class="font-semibold">County:</span> <span id="your-plan-county"></span></p>
+            <p><span class="font-semibold">Type:</span> <span id="your-plan-type"></span></p>
+            <button onclick="clearYourPlan()" class="mt-2 px-3 py-1 rounded-full bg-red-500 text-white text-xs font-semibold hover:bg-red-600">
+              Clear selection
+            </button>
+          </div>
+        </div>
       </div>
     </div>
+
     <div id="plans" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
     <div id="bookmarked-plans" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 hidden"></div>
     <div id="empty-bookmarks" class="hidden bg-white p-14 rounded-2xl shadow text-center flex flex-col items-center justify-center">
@@ -339,11 +311,23 @@ async def plans_page(state: Optional[str] = "WI"):
       <h2 class="text-xl font-semibold text-blue-900 pr-10">${{plan.plan_name}}</h2>
       <p class="text-blue-700 text-base">${{plan.plan_id}} <span class="mx-2">|</span> ${{plan.issuer_name}}</p>
       <p class="text-base text-blue-700 mt-1"><span class="font-medium text-blue-700">County:</span> ${{plan.county}} <span class="mx-2">|</span> <span class="font-medium text-yellow-600">Type:</span> ${{plan.plan_type}}</p>
-      <div class="flex flex-wrap gap-2 mt-2 text-base">
-        <span class="bg-yellow-100 px-2 py-1 rounded-md"><strong>Deductible:</strong> ${{plan.deductible || 'N/A'}}</span>
-        <span class="bg-blue-100 px-2 py-1 rounded-md"><strong>Coinsurance:</strong> ${{plan.coinsurance || 'N/A'}}</span>
-        <span class="bg-blue-50 px-2 py-1 rounded-md"><strong>Max:</strong> ${{plan.annual_max || 'N/A'}}</span>
+      <div class="mt-3 text-sm space-y-1 text-blue-900">
+        <p><span class="font-semibold">Customer Service Local:</span> ${{plan.customer_service_local || 'Not listed'}}</p>
+        <p><span class="font-semibold">Customer Service Toll Free:</span> ${{plan.customer_service_toll_free || 'Not listed'}}</p>
+        <p><span class="font-semibold">Customer Service TTY:</span> ${{plan.customer_service_tty || 'Not listed'}}</p>
       </div>
+      <button 
+        type="button"
+        onclick="setYourPlan(
+          '${{plan.plan_id}}', 
+          '${{String(plan.plan_name).replace(/'/g, "\\'")}}', 
+          '${{String(plan.county).replace(/'/g, "\\'")}}', 
+          '${{String(plan.plan_type).replace(/'/g, "\\'")}}', 
+          event
+        )"
+        class="mt-3 inline-flex items-center px-3 py-1 rounded-full bg-gradient-to-r from-blue-700 to-blue-500 text-white text-xs font-semibold shadow hover:shadow-md">
+        ✅ Set as Your Plan
+      </button>
     `;
     div.innerHTML = html;
     return div;
@@ -484,6 +468,39 @@ async def plans_page(state: Optional[str] = "WI"):
     document.getElementById("modal").classList.remove("flex");
   }}
 
+  function setYourPlan(planId, planName, county, planType, event) {{
+    event.stopPropagation();
+    const yourPlan = {{ plan_id: planId, plan_name: planName, county: county, plan_type: planType }};
+    localStorage.setItem('yourPlan', JSON.stringify(yourPlan));
+    renderYourPlanPanel();
+  }}
+
+  function clearYourPlan() {{
+    localStorage.removeItem('yourPlan');
+    renderYourPlanPanel();
+  }}
+
+  function renderYourPlanPanel() {{
+    const raw = localStorage.getItem('yourPlan');
+    const emptyEl = document.getElementById('your-plan-empty');
+    const contentEl = document.getElementById('your-plan-content');
+    if (!emptyEl || !contentEl) return;
+
+    if (!raw) {{
+      emptyEl.classList.remove('hidden');
+      contentEl.classList.add('hidden');
+      return;
+    }}
+
+    const p = JSON.parse(raw);
+    document.getElementById('your-plan-name').innerText = p.plan_name || '';
+    document.getElementById('your-plan-id').innerText = p.plan_id || '';
+    document.getElementById('your-plan-county').innerText = p.county || '';
+    document.getElementById('your-plan-type').innerText = p.plan_type || '';
+    emptyEl.classList.add('hidden');
+    contentEl.classList.remove('hidden');
+  }}
+
   document.getElementById("countyFilter").onchange = fetchPlans;
   document.getElementById("issuerFilter").onchange = fetchPlans;
   document.getElementById("typeFilter").onchange = fetchPlans;
@@ -492,11 +509,13 @@ async def plans_page(state: Optional[str] = "WI"):
   window.onload = () => {{
     fetchFilters();
     fetchPlans();
+    renderYourPlanPanel();
   }};
 </script>
 </body>
 </html>
     """)
+
 
 @app.get("/api/plans", response_model=List[Plan])
 async def get_plans(
@@ -508,33 +527,40 @@ async def get_plans(
 ):
     df = df_plans.copy()
     if state:
-        df = df[df["State Code"].str.strip() == state]
+        df = df[df["State Code"].astype(str).str.strip() == state]
     if county:
-        df = df[df["County Name"].str.strip() == county]
+        df = df[df["County Name"].astype(str).str.strip() == county]
     if issuer:
-        df = df[df["Issuer Name"].str.strip() == issuer]
+        df = df[df["Issuer Name"].astype(str).str.strip() == issuer]
     if plan_type:
-        df = df[df["Plan Type"].str.strip() == plan_type]
+        df = df[df["Plan Type"].astype(str).str.strip() == plan_type]
     if search:
         s = search.lower()
         df = df[
-            df["Plan Marketing Name"].str.lower().str.contains(s) |
-            df["Issuer Name"].str.lower().str.contains(s)
+            df["Plan Marketing Name"].astype(str).str.lower().str.contains(s) |
+            df["Issuer Name"].astype(str).str.lower().str.contains(s)
         ]
-    return [
-        Plan(
-            plan_id=row["Plan ID (Standard Component)"],
-            plan_name=row["Plan Marketing Name"],
-            issuer_name=row["Issuer Name"],
-            county=row["County Name"],
-            plan_type=row["Plan Type"],
-            deductible=row.get("Deductible"),
-            coinsurance=row.get("Coinsurance"),
-            annual_max=row.get("Annual Maximum"),
-            network_url=row.get("Network URL"),
-            brochure_url=row.get("Plan Brochure URL")
-        ) for _, row in df.iterrows()
-    ]
+
+    plans: List[Plan] = []
+    for _, row in df.iterrows():
+        plans.append(
+            Plan(
+                plan_id=str(row["Plan ID (Standard Component)"]),
+                plan_name=safe_str(row.get("Plan Marketing Name")),
+                issuer_name=safe_str(row.get("Issuer Name")),
+                county=safe_str(row.get("County Name")),
+                plan_type=safe_str(row.get("Plan Type")),
+                deductible=safe_str(row.get("Deductible")),
+                coinsurance=safe_str(row.get("Coinsurance")),
+                annual_max=safe_str(row.get("Annual Maximum")),
+                network_url=safe_str(row.get("Network URL")),
+                brochure_url=safe_str(row.get("Plan Brochure URL")),
+                customer_service_local=safe_str(row.get("Customer Service Phone Number Local")),
+                customer_service_toll_free=safe_str(row.get("Customer Service Phone Number Toll Free")),
+                customer_service_tty=safe_str(row.get("Customer Service Phone Number TTY")),
+            )
+        )
+    return plans
 
 @app.get("/api/filters")
 async def get_filters(state: Optional[str] = Query("WI")):
