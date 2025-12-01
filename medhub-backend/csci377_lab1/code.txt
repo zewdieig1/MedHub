@@ -1,5 +1,0 @@
-<<<<<<< HEAD
-int x = 70;
-=======
-int x = 10;
->>>>>>> experiment
