@@ -1,0 +1,82 @@
+.tab {
+  cursor: pointer;
+  padding: 0.8rem 2rem;
+  border-bottom: 4px solid transparent;
+  transition: background 0.3s, border-bottom-color 0.3s;
+  font-size: 1.15rem;
+  color: #e5e7eb;
+}
+.tab.active {
+  border-bottom-color: #22c55e;
+  color: #e5e7eb;
+  background: linear-gradient(90deg, #0f172a 0%, #0f766e 50%, #22c55e 100%);
+  font-weight: 700;
+}
+.tab:hover {
+  background: linear-gradient(90deg, #0f172a 0%, #0f766e 60%, #22c55e 100%);
+}
+.bookmark-badge {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  font-size: 2rem;
+  cursor: pointer;
+  z-index: 10;
+  transition: transform 0.2s;
+  color: #22c55e;
+}
+.bookmark-badge:hover {
+  transform: scale(1.2) rotate(-8deg);
+  filter: drop-shadow(0 0 10px #22c55e);
+}
+.plan-card {
+  background: linear-gradient(135deg, #020617 0%, #0f172a 60%, #0f766e 100%);
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(15,23,42,0.8);
+  transition: box-shadow 0.3s, transform 0.3s;
+  color: #e5e7eb;
+}
+.plan-card:hover,
+.plan-card:focus {
+  box-shadow: 0 6px 32px rgba(34,197,94,0.4);
+  transform: translateY(-3px) scale(1.01);
+  outline: none;
+}
+.filter-box {
+  background: linear-gradient(120deg, #020617 0%, #0f172a 60%, #0f766e 100%);
+  border-radius: 14px;
+  box-shadow: 0 6px 24px rgba(15,23,42,0.9);
+  color: #e5e7eb;
+}
+.modal-content {
+  background: linear-gradient(135deg, #020617 0%, #0f172a 60%, #0f766e 100%);
+  border-radius: 16px;
+  max-height: 80vh;
+  overflow-y: auto;
+  color: #e5e7eb;
+}
+body {
+  background: radial-gradient(circle at top, #020617 0%, #020617 45%, #020617 100%);
+  color: #e5e7eb;
+}
+.external-link {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(90deg, #22c55e 0%, #14b8a6 100%);
+  color: #0f172a;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  margin: 0.5rem 0;
+  transition: transform 0.2s, box-shadow 0.2s;
+  font-weight: 600;
+}
+.external-link:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(34,197,94,0.5);
+}
+.modal-section {
+  margin: 1rem 0;
+  padding: 1rem;
+  background: rgba(15, 23, 42, 0.8);
+  border-radius: 0.5rem;
+}
