@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dental Plans</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/plans.css">
+</head>
+<body class="min-h-screen">
+  <header class="bg-slate-950 shadow-lg py-7 px-6 rounded-b-3xl mb-1 flex flex-col sm:flex-row items-center justify-between">
+    <div>
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-100 tracking-tight mb-1">
+        <span class="text-white" id="state-title-span">
+          {% if state == "WI" %}Wisconsin{% else %}Illinois{% endif %} Dental Plans
+        </span>
+      </h1>
+      <p class="text-lg text-gray-300 font-medium">Compare and filter 2025 individual dental coverage</p>
+      <div class="mt-3 flex gap-3 items-center">
+        <button
+          type="button"
+          onclick="changeState('WI')"
+          class="px-3 py-1 rounded-full text-xs font-semibold border
+                 border-teal-400 text-teal-200 bg-slate-900/70 hover:bg-teal-500 hover:text-slate-950"
+        >
+          Wisconsin
+        </button>
+        <button
+          type="button"
+          onclick="changeState('IL')"
+          class="px-3 py-1 rounded-full text-xs font-semibold border
+                 border-teal-400 text-teal-200 bg-slate-900/70 hover:bg-teal-500 hover:text-slate-950"
+        >
+          Illinois
+        </button>
+      </div>
+    </div>
+    <img src="https://cdn.jsdelivr.net/gh/hfg-gmuend/openmoji@latest/color/svg/1F9B7.svg" alt="Tooth Icon" class="w-16 h-16 hidden sm:block ml-4" style="filter: drop-shadow(0 2px 8px rgba(34,197,94,0.6));" />
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 py-7">
+    <div class="bg-slate-900/60 rounded-t-2xl shadow mb-0 border border-slate-800">
+      <div class="flex border-b border-slate-700">
+        <div class="tab active" onclick="switchTab('all')" id="tab-all">
+          <span class="mr-2">🗂️</span>All Plans
+        </div>
+        <div class="tab" onclick="switchTab('bookmarked')" id="tab-bookmarked">
+          <span class="mr-2">🔖</span>Bookmarked
+        </div>
+        <div class="tab" onclick="switchTab('history')" id="tab-history">
+          <span class="mr-2">📜</span>History
+        </div>
+      </div>
+    </div>
+
+    <div class="filter-box p-5 mb-8" id="filters-section">
+      <div class="grid md:grid-cols-3 gap-6 items-start">
+        <div class="md:col-span-2">
+          <div class="grid md:grid-cols-4 gap-5">
+            <input id="search" placeholder="Search plans..." class="border border-slate-600 bg-slate-900 text-gray-700 px-3 py-2 rounded-lg w-full focus:ring focus:ring-teal-500/40 transition" />
+            <select id="countyFilter" class="border border-slate-600 px-3 py-2 rounded-lg w-full bg-slate-900 text-gray-700 focus:ring focus:ring-teal-500/40">
+              <option value="" class="text-gray-800">All Counties</option>
+            </select>
+            <select id="issuerFilter" class="border border-slate-600 px-3 py-2 rounded-lg w-full bg-slate-900 text-gray-700 focus:ring focus:ring-teal-500/40">
+              <option value="" class="text-gray-800">All Counties</option>
+            </select>
+            <select id="typeFilter" class="border border-teal-500 px-3 py-2 rounded-lg w-full bg-slate-900 text-gray-700 focus:ring focus:ring-teal-500/40">
+              <option value="" class="text-gray-800">All Counties</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="your-plan-panel" class="mt-5 md:mt-0 bg-slate-900/80 rounded-xl shadow-md p-4 border border-slate-700">
+          <h3 class="text-lg font-semibold text-gray-100 mb-2">Your Plan</h3>
+          <p id="your-plan-empty" class="text-sm text-gray-400">
+            You have not selected a plan yet.
+          </p>
+          <div id="your-plan-content" class="hidden text-sm text-gray-200 space-y-1">
+            <p><span class="font-semibold text-teal-300">Name:</span> <span id="your-plan-name"></span></p>
+            <p><span class="font-semibold text-teal-300">Plan ID:</span> <span id="your-plan-id"></span></p>
+            <p><span class="font-semibold text-teal-300">County:</span> <span id="your-plan-county"></span></p>
+            <p><span class="font-semibold text-teal-300">Type:</span> <span id="your-plan-type"></span></p>
+            <button onclick="clearYourPlan()" class="mt-2 px-3 py-1 rounded-full bg-red-500 text-white text-xs font-semibold hover:bg-red-600">
+              Clear selection
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="plans" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+    <div id="bookmarked-plans" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 hidden"></div>
+
+    <div id="empty-bookmarks" class="hidden bg-slate-900/80 p-14 rounded-2xl shadow text-center flex flex-col items-center justify-center border border-slate-700">
+      <img src="https://cdn.jsdelivr.net/gh/hfg-gmuend/openmoji@latest/color/svg/1F516.svg" alt="Bookmark Icon" class="w-20 h-20 mt-2 mb-6"/>
+      <h3 class="text-2xl font-bold text-gray-100 mb-2">No Bookmarked Plans</h3>
+      <p class="text-gray-400 mb-3">Click the bookmark icon ⭐ on any plan to save it here for quick access.</p>
+      <button onclick="switchTab('all')" class="mt-4 px-8 py-2 rounded-full bg-gradient-to-r from-green-500 via-teal-500 to-green-400 text-slate-950 text-lg font-bold shadow transition hover:scale-105">
+        Browse All Plans
+      </button>
+    </div>
+
+    <div id="history-section" class="hidden bg-slate-900/80 p-7 rounded-2xl shadow-lg mt-7 border border-slate-700">
+      <h2 class="text-xl font-bold text-gray-100 mb-3">Viewer History</h2>
+      <ul id="history-list" class="text-base text-gray-300 space-y-3"></ul>
+    </div>
+
+    <div id="modal" class="fixed inset-0 bg-black bg-opacity-70 hidden items-center justify-center z-50 transition">
+      <div class="modal-content max-w-2xl w-full rounded-xl shadow-2xl p-8 relative flex flex-col border border-teal-600/60">
+        <button onclick="closeModal()" class="absolute top-3 right-3 text-teal-300 hover:text-green-400 text-3xl focus:outline-none bg-slate-900/80 px-2 py-1 rounded-full border border-slate-700">
+          &times;
+        </button>
+        <h2 id="modalTitle" class="text-2xl font-bold mb-2 text-gray-100"></h2>
+        <div id="modalContent"></div>
+      </div>
+    </div>
+  </main>
+
+  <script src="/static/js/plans.js"></script>
+</body>
+</html>
