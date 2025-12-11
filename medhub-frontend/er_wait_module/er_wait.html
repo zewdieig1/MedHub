@@ -1,0 +1,123 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>ER Wait Times</title>
+
+  <style>
+    :root {
+      --bg-main: #020617;        /* dark background */
+      --bg-card: #020617;
+      --border-subtle: #1f2937;  /* dark gray border */
+      --text-main: #f9fafb;      /* almost white */
+      --text-muted: #9ca3af;     /* gray */
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      background: var(--bg-main);
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 1100px;
+      padding: 32px 20px 48px;
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin: 0 0 6px;
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+
+    #er-status {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    /* Card grid */
+    #er-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .er-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 14px 16px;
+    }
+
+    .er-card h3 {
+      margin: 0 0 4px;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .er-card p {
+      margin: 3px 0;
+      font-size: 0.9rem;
+    }
+
+    .er-card p:nth-of-type(3) strong {
+      font-weight: 700;
+    }
+        #moving-dots {
+      display: inline-block;
+      font-weight: 400;
+      animation: bounceDots 0.6s ease-in-out infinite alternate;
+    }
+
+    @keyframes bounceDots {
+      0% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-4px);
+      }
+      100% {
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>ER Wait Times Nearby
+        <span id="moving-dots">...</span>
+    </h1>
+    <p class="subtitle">
+      Use this snapshot to plan smart, non-emergency visits.
+    </p>
+
+    <!-- status / loading / error text -->
+    <div id="er-status"></div>
+
+    <!-- cards are injected here by er_wait.js -->
+    <div id="er-list"></div>
+  </div>
+
+  <!-- Your JavaScript file -->
+  <script src="er_wait.js"></script>
+</body>
+</html>

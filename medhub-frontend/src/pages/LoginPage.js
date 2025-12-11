@@ -1,91 +1,111 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./LoginPage.css";
 
-function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
+const API_BASE = "http://127.0.0.1:8000";
 
-  useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 2500); // 2.5 s splash
-    return () => clearTimeout(timer);
-  }, []);
+function LoginPage() {
+  const navigate = useNavigate();
+  const [isSignup, setIsSignup] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+  const [message, setMessage] = useState("");
+
+  const toggleForm = () => {
+    setIsSignup(!isSignup);
+    setMessage("");
+  };
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setMessage("");
+
     try {
-      const res = await axios.post("http://127.0.0.1:8000/login", {
-        email,
-        password,
-      });
+      const url = isSignup
+        ? `${API_BASE}/api/auth/signup`
+        : `${API_BASE}/api/auth/login`;
+
+      const payload = isSignup
+        ? formData
+        : { email: formData.email, password: formData.password };
+
+      const res = await axios.post(url, payload, { withCredentials: true });
+
       setMessage(res.data.message);
-      navigate("/home");
+
+      if (!isSignup) {
+        setTimeout(() => navigate("/home"), 500);
+      }
+
     } catch (err) {
-      setMessage(err.response?.data?.detail || "Login failed");
+      const detail =
+        err.response?.data?.detail ||
+        err.response?.data?.message ||
+        "Something went wrong";
+      setMessage(detail);
     }
   };
 
-  if (loading) {
-    return (
-      <div className="loading-screen">
-        <svg
-          className="medhub-logo"
-          viewBox="0 0 100 100"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <rect
-            x="25"
-            y="25"
-            width="50"
-            height="50"
-            rx="10"
-            ry="10"
-            fill="none"
-            stroke="white"
-            strokeWidth="4"
-          />
-          <path
-            d="M50 32 L50 68 M35 50 L65 50"
-            stroke="white"
-            strokeWidth="4"
-            strokeLinecap="round"
-          />
-        </svg>
-        <h1 className="loading-text">MedHub</h1>
-      </div>
-    );
-  }
-
   return (
-    <div className="login-container">
-      <h1 className="login-title">🏥 MedHub Login</h1>
-      <form onSubmit={handleSubmit} className="login-form">
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="login-input"
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="login-input"
-        />
-        <button type="submit" className="login-button">
-          Login
-        </button>
-      </form>
-      <p className="login-message">{message}</p>
+    <div className="auth-fade-container">
+      <div className="form-box">
+        <h1>{isSignup ? "Create Account" : "MedHub Login"}</h1>
+
+        <form onSubmit={handleSubmit}>
+
+          {isSignup && (
+            <input
+              type="text"
+              name="name"
+              placeholder="Full Name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+            />
+          )}
+
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
+
+          <button type="submit">
+            {isSignup ? "Sign Up" : "Login"}
+          </button>
+        </form>
+
+        <p>
+          {isSignup ? "Already have an account?" : "Don’t have an account?"}{" "}
+          <button onClick={toggleForm}>
+            {isSignup ? "Log In" : "Sign Up"}
+          </button>
+        </p>
+
+        {message && <p>{message}</p>}
+      </div>
     </div>
   );
 }
 
 export default LoginPage;
-

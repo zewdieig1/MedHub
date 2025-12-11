@@ -1,62 +1,36 @@
-/* LoginPage.css */
-
-body{
-background-color: black;
-color: white;
-font-family: 'Arial, sans-serif';
-display: flex;
-justify-self: center;
-align-items: center;
-height: 100vh;
-margin: 0;
-
+.auth-fade-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: white;
 }
 
-.login-container {
-    background-color: #1a1a1a;
-    padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
-    width: 350px;
-    text-align: center;
-
-}
-.login-title{
-    color: aliceblue;
-    marign-bottom: 20px;
-    font-size: 28px;
-}
-input{
-    width: 100%;
-    padding:10px;
-    margin: 10px 0;
-    border: none;
-    border-radius: 6px
+.form-box {
+  width: 350px;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 15px rgba(0,0,0,0.2);
+  text-align: center;
 }
 
-button{
-    width: 100%;
-    padding: 10px;
-    background-color: white;
-    color: black;
-    border: none;
-    border-radius: 6px;
-    font-size: 16px;
-    cursor: pointer;
+.form-box input {
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px;
+  font-size: 16px;
 }
 
-button:hover {
-  background-color: #00bfff;
+.form-box button {
+  width: 100%;
+  padding: 10px;
+  background-color: #4a90e2;
   color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
 }
 
-.loading-text {
-  color: white;
-  font-size: 32px;
-  animation: fadeIn 2s ease-in-out infinite alternate;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0.3; }
-  to { opacity: 1; }
+.form-box button:hover {
+  background-color: #357ab8;
 }
